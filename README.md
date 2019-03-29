@@ -1,13 +1,20 @@
 Gitlab on Docker
 ================
 
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://git.thebarrens.nu/wolvie/gitlab-docker-tf/blob/master/LICENSE)
+
 This is a simple TF module for deploying a gitlab-ce in one GCE instance on docker containers. This module will start this containers:
 
 * nginx forwarder (tandrade/ngx custom nginx image)
+  * Documentation on this container can be found at [tandrade/ngx](https://hub.docker.com/r/tandrade/ngx)
 * gitlab-ce (gitlab/gitlab-ce official image)
+  * Documentation on gitlab on docker can be found [here](https://docs.gitlab.com/omnibus/docker/)
 * 3 gitlab runners (2 gitlab-runner:latest, 1 gitlab-runner:alpine)
+  * Documentation on gitlab-runners on docker can be found [here](https://docs.gitlab.com/runner/install/docker.html)
 * certbot (certbot/cerbot official image)
+  * Documentation on certbot image can be found [here](https://hub.docker.com/r/certbot/certbot/)
 * redis and short (small project of a url shortener in GO)
+  * Documentation on short can be found [here](https://github.com/wolviecb/short)
 
 It asumes you have a bunch of stuff under ${base_path}:
 
