@@ -1,21 +1,21 @@
 variable "instance_name" {
   description = "Name for the host instance"
-  default     = ""
+  default     = "instance"
 }
 
 variable "instance_size" {
   description = "Size for the host instance"
-  default     = ""
+  default     = "f1-micro"
 }
 
 variable "project_name" {
   description = "The GCE Project ID"
-  default     = ""
+  default     = "the-project-id"
 }
 
 variable "name" {
   description = "Prefix name for resources"
-  default     = ""
+  default     = "test"
 }
 
 variable "region" {
@@ -30,50 +30,50 @@ variable "zone" {
 
 variable "base_path" {
   description = "Base path for attached disk"
-  default     = ""
+  default     = "/something"
 }
 
 variable "cert_path" {
   description = "Path for self-signed certificate"
-  default     = ""
+  default     = "/cert.pem"
 }
 
 variable "key_path" {
   description = "Path for self-signed key"
-  default     = ""
+  default     = "/key.pem"
 }
 
 variable "nginx_container" {
   description = "Name for the nginx forwarder container"
-  default     = ""
+  default     = "ngx"
 }
 
 variable "gitlab_container" {
   description = "Name for the gitlab container"
-  default     = ""
+  default     = "gitlab"
 }
 
 variable "runner0_container" {
   description = "Name for the gitlab runner container"
-  default     = ""
+  default     = "runner0"
 }
 
 variable "runner1_container" {
   description = "Name for the gitlab runner container"
-  default     = ""
+  default     = "runner1"
 }
 
 variable "runner2_container" {
   description = "Name for the gitlab runner container"
-  default     = ""
+  default     = "runner2"
 }
 
 variable "domain" {
   description = "DNS Domain name"
-  default     = ""
+  default     = "test.com"
 }
 
 variable "tls_bootstrap" {
   description = "Hostname for tls self-signed certs"
-  default     = ""
+  default     = "test.com"
 }
