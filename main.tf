@@ -50,7 +50,7 @@ data "template_file" "git_bootstrap" {
     cert_path         = "${var.cert_path}"
     key_path          = "${var.key_path}"
     disk_name         = "${var.name}-${var.instance_name}"
-    tls_name          = "${var.tls_bootstrap}"
+    tls_name          = "${var.tls_name}"
     docker_network    = "${var.name}"
     nginx_container   = "${var.nginx_container}"
     gitlab_container  = "${var.gitlab_container}"

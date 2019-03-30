@@ -119,20 +119,18 @@ gitlab() {
       return 0
     else
       if docker run -d \
-        --hostname git.thebarrens.nu \
-        -e GITLAB_OMNIBUS_CONFIG="external_url 'https://git.thebarrens.nu/'; gitlab_rails['lfs_enabled'] = true;" \
+        --hostname ${tls_name} \
+        -e GITLAB_OMNIBUS_CONFIG="external_url 'https://${tls_name}/'; gitlab_rails['lfs_enabled'] = true;" \
         -p 22:22 \
         --name "${gitlab_container}" \
         --network "${docker_network}" \
         --restart always \
-        -v $TLS_CERT:/etc/gitlab/ssl/git.thebarrens.nu.crt:ro \
-        -v $TLS_KEY:/etc/gitlab/ssl/git.thebarrens.nu.key:ro \
+        -v $TLS_CERT:/etc/gitlab/ssl/${tls_name}.crt:ro \
+        -v $TLS_KEY:/etc/gitlab/ssl/${tls_name}.key:ro \
         -v $BASE_PATH/srv/gitlab/config:/etc/gitlab \
         -v $BASE_PATH/srv/gitlab/logs:/var/log/gitlab \
         -v $BASE_PATH/srv/gitlab/data:/var/opt/gitlab \
         gitlab/gitlab-ce:latest; then
-  #  --add-host="git.thebarrens.nu:172.17.0.1" \
-  #  -p 127.0.0.1:10443:443 \
         info "OK"
       else
         info "FAILED"

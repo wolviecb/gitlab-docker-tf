@@ -73,7 +73,7 @@ variable "domain" {
   default     = ""
 }
 
-variable "tls_bootstrap" {
-  description = "Hostname for tls self-signed certs"
+variable "tls_name" {
+  description = "Hostname for tls certs"
   default     = ""
 }
