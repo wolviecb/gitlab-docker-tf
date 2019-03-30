@@ -52,7 +52,6 @@ data "template_file" "user-data" {
     cert_path         = "${var.cert_path}"
     key_path          = "${var.key_path}"
     disk_name         = "${var.name}-${var.instance_name}"
-    tls_name          = "${var.tls_bootstrap}"
     docker_network    = "${var.name}"
     nginx_container   = "${var.nginx_container}"
     ngx_version       = "${var.ngx_version}"
