@@ -107,6 +107,7 @@ resource "google_compute_firewall" "ssh_ingress" {
     protocol = "tcp"
 
     ports = [
+      "22",
       "2222",
     ]
   }
