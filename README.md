@@ -3,7 +3,7 @@ Gitlab on Docker
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://git.thebarrens.nu/wolvie/gitlab-docker-tf/blob/master/LICENSE)
 
-This is a simple TF module for deploying a gitlab-ce in one GCE instance on docker containers. This module will start this containers:
+This is a simple TF module for deploying gitlab-ce in docker containers on an GCE instance. This module will start these containers:
 
 * nginx forwarder (tandrade/ngx custom nginx image)
   * Documentation on this container can be found at [tandrade/ngx](https://hub.docker.com/r/tandrade/ngx)
