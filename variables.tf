@@ -77,3 +77,8 @@ variable "tls_bootstrap" {
   description = "Hostname for tls self-signed certs"
   default     = "test.com"
 }
+
+variable "ngx_version" {
+  description = "Version for the ngx container"
+  default     = "v1.0"
+}

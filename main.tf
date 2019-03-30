@@ -31,8 +31,11 @@ resource "google_compute_instance" "git" {
     access_config = {}
   }
 
-  metadata_startup_script = "${data.template_file.git_bootstrap.rendered}"
+  # metadata_startup_script = "${data.template_file.git_bootstrap.rendered}"
 
+  metadata {
+    user-data = "${data.template_file.user-data.rendered}"
+  }
   tags = ["nginx", "ssh"]
 }
 
@@ -53,6 +56,25 @@ data "template_file" "git_bootstrap" {
     tls_name          = "${var.tls_bootstrap}"
     docker_network    = "${var.name}"
     nginx_container   = "${var.nginx_container}"
+    gitlab_container  = "${var.gitlab_container}"
+    runner0_container = "${var.runner0_container}"
+    runner1_container = "${var.runner1_container}"
+    runner2_container = "${var.runner2_container}"
+  }
+}
+
+data "template_file" "user-data" {
+  template = "${file("${path.module}/cloud-config")}"
+
+  vars {
+    base_path         = "${var.base_path}"
+    cert_path         = "${var.cert_path}"
+    key_path          = "${var.key_path}"
+    disk_name         = "${var.name}-${var.instance_name}"
+    tls_name          = "${var.tls_bootstrap}"
+    docker_network    = "${var.name}"
+    nginx_container   = "${var.nginx_container}"
+    ngx_version       = "${var.ngx_version}"
     gitlab_container  = "${var.gitlab_container}"
     runner0_container = "${var.runner0_container}"
     runner1_container = "${var.runner1_container}"
