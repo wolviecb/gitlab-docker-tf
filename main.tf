@@ -44,24 +44,6 @@ resource "google_compute_disk" "git_data" {
   size = "10"
 }
 
-data "template_file" "git_bootstrap" {
-  template = "${file("${path.module}/starter.sh")}"
-
-  vars {
-    base_path         = "${var.base_path}"
-    cert_path         = "${var.cert_path}"
-    key_path          = "${var.key_path}"
-    disk_name         = "${var.name}-${var.instance_name}"
-    tls_name          = "${var.tls_bootstrap}"
-    docker_network    = "${var.name}"
-    nginx_container   = "${var.nginx_container}"
-    gitlab_container  = "${var.gitlab_container}"
-    runner0_container = "${var.runner0_container}"
-    runner1_container = "${var.runner1_container}"
-    runner2_container = "${var.runner2_container}"
-  }
-}
-
 data "template_file" "user-data" {
   template = "${file("${path.module}/cloud-config")}"
 
