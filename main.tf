@@ -31,11 +31,10 @@ resource "google_compute_instance" "git" {
     access_config = {}
   }
 
-  # metadata_startup_script = "${data.template_file.git_bootstrap.rendered}"
-
   metadata {
     user-data = "${data.template_file.user-data.rendered}"
   }
+
   tags = ["nginx", "ssh"]
 }
 
