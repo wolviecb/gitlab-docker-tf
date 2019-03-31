@@ -53,6 +53,7 @@ data "template_file" "user-data" {
     key_path          = "${var.key_path}"
     disk_name         = "${var.name}-${var.instance_name}"
     docker_network    = "${var.name}"
+    tls_name          = "${var.tls_name}"
     nginx_container   = "${var.nginx_container}"
     ngx_version       = "${var.ngx_version}"
     gitlab_container  = "${var.gitlab_container}"

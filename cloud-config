@@ -47,13 +47,13 @@ write_files:
     TimeoutSec=300
     ExecStartPre=/usr/bin/docker pull gitlab/gitlab-ce:latest
     ExecStart=/usr/bin/docker run --rm \
-      --hostname git.thebarrens.nu \
-      -e GITLAB_OMNIBUS_CONFIG="external_url 'https://git.thebarrens.nu/'; gitlab_rails['lfs_enabled'] = true;" \
+      --hostname ${tls_name} \
+      -e GITLAB_OMNIBUS_CONFIG="external_url 'https://${tls_name}/'; gitlab_rails['lfs_enabled'] = true;" \
       -p 22:22 \
       --name ${gitlab_container} \
       --network ${docker_network} \
-      -v ${cert_path}:/etc/gitlab/ssl/git.thebarrens.nu.crt:ro \
-      -v ${key_path}:/etc/gitlab/ssl/git.thebarrens.nu.key:ro \
+      -v ${cert_path}:/etc/gitlab/ssl/${tls_name}.crt:ro \
+      -v ${key_path}:/etc/gitlab/ssl/${tls_name}.key:ro \
       -v ${base_path}/srv/gitlab/config:/etc/gitlab \
       -v ${base_path}/srv/gitlab/logs:/var/log/gitlab \
       -v ${base_path}/srv/gitlab/data:/var/opt/gitlab \

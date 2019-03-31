@@ -77,3 +77,8 @@ variable "ngx_version" {
   description = "Version for the ngx container"
   default     = "v1.0"
 }
+
+variable "tls_name" {
+  description = "Hostname for gitlab tls"
+  default     = "git.test.com"
+}
