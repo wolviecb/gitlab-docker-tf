@@ -1,12 +1,14 @@
+terraform {
+  required_providers = {
+    google   = "~> 2.3"
+    template = "~> 2.1"
+  }
+}
+
 provider "google" {
   project = "${var.project_name}"
   region  = "${var.region}"
   zone    = "${var.zone}"
-  version = "~> 2.2"
-}
-
-provider "template" {
-  version = "~> 1.0"
 }
 
 resource "google_compute_instance" "git" {
