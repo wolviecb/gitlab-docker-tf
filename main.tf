@@ -113,12 +113,17 @@ resource "google_dns_managed_zone" "dns_zone" {
   name        = "${var.name}"
   dns_name    = "${var.domain}."
   description = "Default DNS Zone"
+
+  labels {
+    system  = "git"
+    version = "${var.tf_version}"
+  }
 }
 
 resource "google_dns_record_set" "git_dns" {
   name         = "git.${google_dns_managed_zone.dns_zone.dns_name}"
   type         = "A"
-  ttl          = 60
+  ttl          = 30
   managed_zone = "${google_dns_managed_zone.dns_zone.name}"
   rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
 }
@@ -126,7 +131,7 @@ resource "google_dns_record_set" "git_dns" {
 resource "google_dns_record_set" "root_dns" {
   name         = "${google_dns_managed_zone.dns_zone.dns_name}"
   type         = "A"
-  ttl          = 60
+  ttl          = 30
   managed_zone = "${google_dns_managed_zone.dns_zone.name}"
   rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
 }
