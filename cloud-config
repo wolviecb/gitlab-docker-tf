@@ -214,21 +214,15 @@ runcmd:
 - systemctl daemon-reload
 - systemctl stop sshd
 - systemctl start sshd-cur
-- systemctl enable sshd-cur
-- systemctl start ngx.service
-- systemctl enable ngx.service
-- systemctl start gitlab.service
-- systemctl enable gitlab.service
-- systemctl start runner0.service
-- systemctl enable runner0.service
-- systemctl start runner1.service
-- systemctl enable runner1.service
-- systemctl start runner2.service
-- systemctl enable runner2.service
-- systemctl start certbot.timer
-- systemctl enable certbot.timer
+- systemctl enable --now sshd-cur
+- systemctl enable --now ngx.service
+- systemctl enable --now gitlab.service
+- systemctl enable --now runner0.service
+- systemctl enable --now runner1.service
+- systemctl enable --now runner2.service
+- systemctl enable --now certbot.timer
+- systemctl enable --now gitlab-restart.timer
 
-# Optional once-per-boot setup. For example: mounting a PD.
 bootcmd:
 - fsck.ext4 -tvy /dev/disk/by-id/google-${disk_name}
 - mkdir -p ${base_path}
