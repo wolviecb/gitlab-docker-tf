@@ -84,6 +84,6 @@ variable "tls_name" {
 }
 
 variable "tf_version" {
-  description = "Main module version used"
-  default     = "2.4"
+  description = "Main module major version used"
+  default     = "2"
 }
