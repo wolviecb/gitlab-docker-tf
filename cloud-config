@@ -171,6 +171,30 @@ write_files:
     [Install]
     WantedBy=timers.target
 
+- path: /etc/systemd/system/gitlab-restart.service
+  permissions: 0644
+  owner: root
+  content: |
+    [Unit]
+    Description=Restart gitlab
+
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/bin/systemctl restart gitlab
+    ExecStart=/usr/bin/systemctl restart runner0
+    ExecStart=/usr/bin/systemctl restart runner1
+    ExecStart=/usr/bin/systemctl restart runner2
+
+- path: /etc/systemd/system/gitlab-restart.timer
+  permissions: 0644
+  owner: root
+  content: |
+    [Timer]
+    OnCalendar=*-*-* 3:00:00
+
+    [Install]
+    WantedBy=timers.target
+
 - path: /etc/systemd/system/sshd-cur.service
   permissions: 06444
   owner: root
