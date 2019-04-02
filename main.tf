@@ -38,12 +38,22 @@ resource "google_compute_instance" "git" {
   }
 
   tags = ["nginx", "ssh"]
+
+  labels {
+    system  = "git"
+    version = "${var.tf_version}"
+  }
 }
 
 resource "google_compute_disk" "git_data" {
   name = "${var.name}-${var.instance_name}-data"
   type = "pd-standard"
   size = "10"
+
+  labels {
+    system  = "git"
+    version = "${var.tf_version}"
+  }
 }
 
 data "template_file" "user-data" {

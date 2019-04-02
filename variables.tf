@@ -82,3 +82,8 @@ variable "tls_name" {
   description = "Hostname for gitlab tls"
   default     = "git.test.com"
 }
+
+variable "tf_version" {
+  description = "Main module version used"
+  default     = "2.4"
+}
