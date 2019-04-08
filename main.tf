@@ -19,7 +19,7 @@ resource "google_compute_instance" "git" {
     initialize_params {
       image = "cos-cloud/cos-stable"
       type  = "pd-standard"
-      size  = 10
+      size  = "${var.boot_disk_size}"
     }
   }
 

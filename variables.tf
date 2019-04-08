@@ -87,3 +87,8 @@ variable "tf_version" {
   description = "Main module major version used"
   default     = "2"
 }
+
+variable "boot_disk_size" {
+  description = "Size for the boot disk size"
+  default     = 10
+}
