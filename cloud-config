@@ -148,6 +148,7 @@ write_files:
   content: |
     [Unit]
     Description=Certbot container
+    Requires=docker.service
 
     [Service]
     Type=oneshot
@@ -177,6 +178,7 @@ write_files:
   content: |
     [Unit]
     Description=Restart gitlab
+    Requires=docker.service
 
     [Service]
     Type=oneshot
@@ -191,6 +193,28 @@ write_files:
   content: |
     [Timer]
     OnCalendar=*-*-* 3:00:00
+
+    [Install]
+    WantedBy=timers.target
+
+- path: /etc/systemd/system/docker_cleanup.service
+  permissions: 0644
+  owner: root
+  content: |
+    [Unit]
+    Description=Docker cleanup
+    Requires=docker.service
+
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/bin/docker system prune --volumes -a -f
+
+- path: /etc/systemd/system/docker_cleanup.timer
+  permissions: 0644
+  owner: root
+  content: |
+    [Timer]
+    OnCalendar=*-*-* 4:00:00
 
     [Install]
     WantedBy=timers.target
@@ -222,6 +246,7 @@ runcmd:
 - systemctl enable --now runner2.service
 - systemctl enable --now certbot.timer
 - systemctl enable --now gitlab-restart.timer
+- systemctl enable --now docker_cleanup.timer
 
 bootcmd:
 - fsck.ext4 -tvy /dev/disk/by-id/google-${disk_name}
