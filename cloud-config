@@ -159,8 +159,6 @@ write_files:
       -v ${base_path}/www:/var/www/certbot:rw \
       certbot/certbot renew
     ExecStartPost=/usr/bin/docker exec ${nginx_container} kill -HUP 1
-    ExecStop=/usr/bin/docker stop certbot
-    ExecStopPost=/usr/bin/docker rm certbot
 
 - path: /etc/systemd/system/certbot.timer
   permissions: 0644
