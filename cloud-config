@@ -245,10 +245,12 @@ write_files:
     ExecStart=/usr/bin/docker run --rm \
       --name short \
       --network ${docker_network} \
-      -v ${base_path}/short:/short:rw \
+      -v ${base_path}/short:/data:rw \
       tandrade/short:${short_version} \
       -addr 0.0.0.0:443 \
-      -domain short.thebarrens.nu
+      -domain short.thebarrens.nu \
+      -dump /data/dump.json
+    ExecStop=/usr/bin/docker stop short
 
 runcmd:
 - systemctl daemon-reload
@@ -263,6 +265,7 @@ runcmd:
 - systemctl enable --now certbot.timer
 - systemctl enable --now gitlab-restart.timer
 - systemctl enable --now docker_cleanup.timer
+- systemctl enable --now short.service
 
 bootcmd:
 - fsck.ext4 -tvy /dev/disk/by-id/google-${disk_name}
