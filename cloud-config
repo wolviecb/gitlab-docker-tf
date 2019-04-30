@@ -25,7 +25,7 @@ write_files:
         -v ${base_path}/ngx/conf.d:/etc/nginx/conf.d:ro \
         -v ${base_path}/letsencrypt:/etc/letsencrypt:ro \
         -v ${base_path}/www:/var/www/certbot:ro \
-      tandrade/ngx:${ngx_version}
+        tandrade/ngx:${ngx_version}
     ExecStop=/usr/bin/docker stop ${nginx_container}
     ExecStopPost=/usr/bin/docker rm ${nginx_container}
 
@@ -231,6 +231,24 @@ write_files:
 
     [Install]
     WantedBy=multi-user.target
+
+- path: /etc/systemd/system/short.service
+  permissions: 0644
+  owner: root
+  content: |
+    [Unit]
+    Description=Short the url shortener
+    Requires=docker.service
+    After=ngx.service
+
+    [Service]
+    ExecStart=/usr/bin/docker run --rm \
+      --name short \
+      --network ${docker_network} \
+      -v ${base_path}/short:/short:rw \
+      tandrade/short:${short_version} \
+      -addr 0.0.0.0:443 \
+      -domain short.thebarrens.nu
 
 runcmd:
 - systemctl daemon-reload
