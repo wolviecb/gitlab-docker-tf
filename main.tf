@@ -68,6 +68,7 @@ data "template_file" "user-data" {
     tls_name          = "${var.tls_name}"
     nginx_container   = "${var.nginx_container}"
     ngx_version       = "${var.ngx_version}"
+    short_version     = "${var.short_version}"
     gitlab_container  = "${var.gitlab_container}"
     runner0_container = "${var.runner0_container}"
     runner1_container = "${var.runner1_container}"
