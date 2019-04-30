@@ -75,6 +75,8 @@ variable "domain" {
 
 variable "ngx_version" {
   description = "Version for the ngx container"
+  default     = ""
+}
 
 variable "short_version" {
   description = "Version for the short container"

@@ -121,12 +121,12 @@ resource "google_dns_managed_zone" "dns_zone" {
   }
 }
 
-resource "google_dns_record_set" "git_dns" {
-  name         = "git.${google_dns_managed_zone.dns_zone.dns_name}"
-  type         = "A"
-  ttl          = 30
+resource "google_dns_record_set" "dns_caa" {
+  name         = "${google_dns_managed_zone.dns_zone.dns_name}"
+  type         = "CAA"
+  ttl          = 86400
   managed_zone = "${google_dns_managed_zone.dns_zone.name}"
-  rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
+  rrdatas      = ["128 issue \"letsencrypt.org\""]
 }
 
 resource "google_dns_record_set" "root_dns" {
@@ -137,10 +137,18 @@ resource "google_dns_record_set" "root_dns" {
   rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
 }
 
-resource "google_dns_record_set" "dns_caa" {
-  name         = "${google_dns_managed_zone.dns_zone.dns_name}"
-  type         = "CAA"
-  ttl          = 86400
+resource "google_dns_record_set" "git_dns" {
+  name         = "git.${google_dns_managed_zone.dns_zone.dns_name}"
+  type         = "A"
+  ttl          = 30
   managed_zone = "${google_dns_managed_zone.dns_zone.name}"
-  rrdatas      = ["128 issue \"letsencrypt.org\""]
+  rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
+}
+
+resource "google_dns_record_set" "short_dns" {
+  name         = "short.${google_dns_managed_zone.dns_zone.dns_name}"
+  type         = "A"
+  ttl          = 30
+  managed_zone = "${google_dns_managed_zone.dns_zone.name}"
+  rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
 }
