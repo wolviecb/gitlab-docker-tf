@@ -248,6 +248,8 @@ write_files:
     ExecStart=/usr/bin/docker run --rm \
       --name short \
       --network ${docker_network} \
+      -m 100m \
+      --memory-swap 400m \
       -v ${base_path}/short:/data:rw \
       tandrade/short:${short_version} \
       -addr 0.0.0.0 \
