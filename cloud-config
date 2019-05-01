@@ -242,6 +242,9 @@ write_files:
     After=ngx.service
 
     [Service]
+    Restart=always
+    RestartSec=5
+    TimeoutSec=300
     ExecStart=/usr/bin/docker run --rm \
       --name short \
       --network ${docker_network} \
