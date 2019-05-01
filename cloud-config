@@ -255,6 +255,9 @@ write_files:
       -dump /data/dump.json
     ExecStop=/usr/bin/docker stop short
 
+    [Install]
+    WantedBy=default.target
+
 runcmd:
 - systemctl daemon-reload
 - systemctl stop sshd
