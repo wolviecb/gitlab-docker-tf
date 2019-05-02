@@ -1,47 +1,51 @@
 terraform {
-  required_providers = {
-    google   = "~> 2.3"
+  required_version = ">= 0.12"
+  required_providers {
+    google   = "2.4.0-dev20190415h16-dev"
     template = "~> 2.1"
   }
 }
 
+
+
 provider "google" {
-  project = "${var.project_name}"
-  region  = "${var.region}"
-  zone    = "${var.zone}"
+  project = var.project_name
+  region  = var.region
+  zone    = var.zone
 }
 
 resource "google_compute_instance" "git" {
   name         = "${var.name}-${var.instance_name}"
-  machine_type = "${var.instance_size}"
+  machine_type = var.instance_size
 
   boot_disk {
     initialize_params {
       image = "cos-cloud/cos-stable"
       type  = "pd-standard"
-      size  = "${var.boot_disk_size}"
+      size  = var.boot_disk_size
     }
   }
 
   attached_disk {
-    source      = "${google_compute_disk.git_data.self_link}"
+    source      = google_compute_disk.git_data.self_link
     device_name = "${var.name}-${var.instance_name}"
   }
 
   network_interface {
-    network       = "default"
-    access_config = {}
+    network = "default"
+    access_config {
+    }
   }
 
-  metadata {
-    user-data = "${data.template_file.user-data.rendered}"
+  metadata = {
+    user-data = data.template_file.user-data.rendered
   }
 
   tags = ["nginx", "ssh"]
 
-  labels {
+  labels = {
     system  = "git"
-    version = "${var.tf_version}"
+    version = var.tf_version
   }
 }
 
@@ -50,29 +54,29 @@ resource "google_compute_disk" "git_data" {
   type = "pd-standard"
   size = "10"
 
-  labels {
+  labels = {
     system  = "git"
-    version = "${var.tf_version}"
+    version = var.tf_version
   }
 }
 
 data "template_file" "user-data" {
-  template = "${file("${path.module}/cloud-config")}"
+  template = file("${path.module}/cloud-config")
 
-  vars {
-    base_path         = "${var.base_path}"
-    cert_path         = "${var.cert_path}"
-    key_path          = "${var.key_path}"
+  vars = {
+    base_path         = var.base_path
+    cert_path         = var.cert_path
+    key_path          = var.key_path
     disk_name         = "${var.name}-${var.instance_name}"
-    docker_network    = "${var.name}"
-    tls_name          = "${var.tls_name}"
-    nginx_container   = "${var.nginx_container}"
-    ngx_version       = "${var.ngx_version}"
-    short_version     = "${var.short_version}"
-    gitlab_container  = "${var.gitlab_container}"
-    runner0_container = "${var.runner0_container}"
-    runner1_container = "${var.runner1_container}"
-    runner2_container = "${var.runner2_container}"
+    docker_network    = var.name
+    tls_name          = var.tls_name
+    nginx_container   = var.nginx_container
+    ngx_version       = var.ngx_version
+    short_version     = var.short_version
+    gitlab_container  = var.gitlab_container
+    runner0_container = var.runner0_container
+    runner1_container = var.runner1_container
+    runner2_container = var.runner2_container
   }
 }
 
@@ -111,44 +115,45 @@ resource "google_compute_firewall" "ssh_ingress" {
 }
 
 resource "google_dns_managed_zone" "dns_zone" {
-  name        = "${var.name}"
+  name        = var.name
   dns_name    = "${var.domain}."
   description = "Default DNS Zone"
 
-  labels {
+  labels = {
     system  = "git"
-    version = "${var.tf_version}"
+    version = var.tf_version
   }
 }
 
 resource "google_dns_record_set" "dns_caa" {
-  name         = "${google_dns_managed_zone.dns_zone.dns_name}"
+  name         = google_dns_managed_zone.dns_zone.dns_name
   type         = "CAA"
   ttl          = 86400
-  managed_zone = "${google_dns_managed_zone.dns_zone.name}"
+  managed_zone = google_dns_managed_zone.dns_zone.name
   rrdatas      = ["128 issue \"letsencrypt.org\""]
 }
 
 resource "google_dns_record_set" "root_dns" {
-  name         = "${google_dns_managed_zone.dns_zone.dns_name}"
+  name         = google_dns_managed_zone.dns_zone.dns_name
   type         = "A"
   ttl          = 30
-  managed_zone = "${google_dns_managed_zone.dns_zone.name}"
-  rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
+  managed_zone = google_dns_managed_zone.dns_zone.name
+  rrdatas      = [google_compute_instance.git.network_interface[0].access_config[0].nat_ip]
 }
 
 resource "google_dns_record_set" "git_dns" {
   name         = "git.${google_dns_managed_zone.dns_zone.dns_name}"
   type         = "A"
   ttl          = 30
-  managed_zone = "${google_dns_managed_zone.dns_zone.name}"
-  rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
+  managed_zone = google_dns_managed_zone.dns_zone.name
+  rrdatas      = [google_compute_instance.git.network_interface[0].access_config[0].nat_ip]
 }
 
 resource "google_dns_record_set" "short_dns" {
   name         = "short.${google_dns_managed_zone.dns_zone.dns_name}"
   type         = "A"
   ttl          = 30
-  managed_zone = "${google_dns_managed_zone.dns_zone.name}"
-  rrdatas      = ["${google_compute_instance.git.network_interface.0.access_config.0.nat_ip}"]
+  managed_zone = google_dns_managed_zone.dns_zone.name
+  rrdatas      = [google_compute_instance.git.network_interface[0].access_config[0].nat_ip]
 }
+
