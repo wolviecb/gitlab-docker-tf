@@ -117,6 +117,25 @@ resource "google_dns_managed_zone" "dns_zone" {
   dns_name    = "${var.domain}."
   description = "Default DNS Zone"
 
+  dnssec_config {
+    kind          = "dns#managedZoneDnsSecConfig"
+    non_existence = "nsec3"
+    state         = "on"
+
+    default_key_specs {
+      algorithm  = "rsasha256"
+      key_length = 2048
+      key_type   = "keySigning"
+      kind       = "dns#dnsKeySpec"
+    }
+    default_key_specs {
+      algorithm  = "rsasha256"
+      key_length = 1024
+      key_type   = "zoneSigning"
+      kind       = "dns#dnsKeySpec"
+    }
+  }
+
   labels = {
     system  = "git"
     version = var.tf_version
