@@ -15,12 +15,14 @@ write_files:
     RestartSec=5
     TimeoutSec=300
     ExecStartPre=/usr/bin/docker pull tandrade/ngx:${ngx_version}
+    ExecStartPre=/mnt/disks/utils/fixaddr
     ExecStart=/usr/bin/docker run --rm \
         -p 80:80 \
         -p 443:443 \
         --name ${nginx_container} \
         --network ${docker_network} \
         -v ${base_path}/ngx/nginx.conf:/etc/nginx/nginx.conf:ro \
+        -v ${base_path}/ngx/crs-setup.conf:/usr/local/owasp-modsecurity-crs-3.1.1/crs-setup.conf:ro \
         -v ${base_path}/ngx/tunes.conf:/etc/nginx/tunes.conf:ro \
         -v ${base_path}/ngx/conf.d:/etc/nginx/conf.d:ro \
         -v ${base_path}/letsencrypt:/etc/letsencrypt:ro \
