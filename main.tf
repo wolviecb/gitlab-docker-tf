@@ -35,7 +35,7 @@ resource "google_compute_instance" "git" {
   }
 
   metadata = {
-    user-data = templatefile("${path.modules}/cloud-config", {
+    user-data = templatefile("${path.module}/cloud-config", {
       base_path         = var.base_path
       cert_path         = var.cert_path
       key_path          = var.key_path
