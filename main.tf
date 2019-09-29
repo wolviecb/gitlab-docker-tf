@@ -1,8 +1,7 @@
 terraform {
   required_version = ">= 0.12"
   required_providers {
-    google   = "~> 2.7"
-    template = "~> 2.1"
+    google = "~> 2.7"
   }
 }
 
@@ -36,7 +35,21 @@ resource "google_compute_instance" "git" {
   }
 
   metadata = {
-    user-data = data.template_file.user-data.rendered
+    user-data = templatefile("${path.modules}/cloud-config", {
+      base_path         = var.base_path
+      cert_path         = var.cert_path
+      key_path          = var.key_path
+      disk_name         = "${var.name}-${var.instance_name}"
+      docker_network    = var.name
+      tls_name          = var.tls_name
+      nginx_container   = var.nginx_container
+      ngx_version       = var.ngx_version
+      short_version     = var.short_version
+      gitlab_container  = var.gitlab_container
+      runner0_container = var.runner0_container
+      runner1_container = var.runner1_container
+      runner2_container = var.runner2_container
+    })
   }
 
   tags = ["nginx", "ssh"]
@@ -55,26 +68,6 @@ resource "google_compute_disk" "git_data" {
   labels = {
     system  = "git"
     version = var.tf_version
-  }
-}
-
-data "template_file" "user-data" {
-  template = file("${path.module}/cloud-config")
-
-  vars = {
-    base_path         = var.base_path
-    cert_path         = var.cert_path
-    key_path          = var.key_path
-    disk_name         = "${var.name}-${var.instance_name}"
-    docker_network    = var.name
-    tls_name          = var.tls_name
-    nginx_container   = var.nginx_container
-    ngx_version       = var.ngx_version
-    short_version     = var.short_version
-    gitlab_container  = var.gitlab_container
-    runner0_container = var.runner0_container
-    runner1_container = var.runner1_container
-    runner2_container = var.runner2_container
   }
 }
 
